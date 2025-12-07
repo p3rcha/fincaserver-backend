@@ -1,4 +1,4 @@
-import { StoreItem } from '../types/StoreItem';
+import type { StoreItem } from '../types/StoreItem.js';
 
 export const storeItems: StoreItem[] = [
   {

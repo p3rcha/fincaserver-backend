@@ -1,4 +1,4 @@
-import { ServerInfo } from '../types/ServerInfo';
+import type { ServerInfo } from '../types/ServerInfo.js';
 
 export const serverInfo: ServerInfo = {
   name: 'Minecraft Server',
