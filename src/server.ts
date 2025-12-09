@@ -18,11 +18,21 @@ const PORT = process.env.PORT || 4000;
 // CORS Configuration
 // ============================================
 // Allow requests from frontend domain(s)
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URL = process.env.FRONTEND_URL;
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+  : [];
+
+// Build allowed origins list
 const allowedOrigins = [
-  FRONTEND_URL,
+  // Development origins (always allowed)
   'http://localhost:5173', // Vite dev server
   'http://localhost:3000',  // Alternative dev port
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000',
+  // Production origins from environment
+  ...(FRONTEND_URL ? [FRONTEND_URL] : []),
+  ...ALLOWED_ORIGINS,
 ];
 
 // CORS middleware with origin validation
@@ -33,10 +43,19 @@ app.use(
       if (!origin) return callback(null, true);
       
       // Check if origin is in allowed list
-      if (allowedOrigins.some(allowed => origin.startsWith(allowed))) {
+      const isAllowed = allowedOrigins.some(allowed => {
+        // Exact match
+        if (origin === allowed) return true;
+        // Starts with match (for localhost with ports)
+        if (origin.startsWith(allowed)) return true;
+        return false;
+      });
+      
+      if (isAllowed) {
         callback(null, true);
       } else {
         console.warn(`[CORS] Blocked origin: ${origin}`);
+        console.warn(`[CORS] Allowed origins: ${allowedOrigins.join(', ')}`);
         callback(new Error('Not allowed by CORS'));
       }
     },

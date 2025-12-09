@@ -259,7 +259,7 @@ router.get('/packages', async (req: Request, res: Response) => {
     const { data } = await tebexClient.get(getAccountUrl('/packages'));
     res.json(data);
   } catch (error: unknown) {
-    res.status(500).json({ error: 'Failed to fetch packages' });
+    handleTebexError(res, error, 'fetch packages');
   }
 });
 
