@@ -10,6 +10,7 @@ import { scalarConfig } from './config/scalarTheme.js';
 import serverInfoRoutes from './routes/serverInfo.routes.js';
 import storeRoutes from './routes/store.routes.js';
 import tebexRoutes from './routes/tebex.routes.js';
+import eleccionesRoutes from './routes/elecciones.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -98,6 +99,7 @@ app.use(
 app.use('/api', serverInfoRoutes);
 app.use('/api/store', storeRoutes);
 app.use('/api/tebex', tebexRoutes);
+app.use('/api/elecciones', eleccionesRoutes);
 
 // ============================================
 // Health Check
